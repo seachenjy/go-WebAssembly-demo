@@ -1,6 +1,8 @@
 package test
 
 import (
+	"io"
+	"net/http"
 	"os"
 	"testing"
 
@@ -29,4 +31,33 @@ func TestAud(t *testing.T) {
 	}
 	player.Write(bytes)
 
+}
+
+func TestLoader(t *testing.T) {
+	response, err := http.Get("https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_poles_4k.tif")
+	if err != nil {
+		t.Error(err)
+	}
+	defer response.Body.Close()
+	buf := make([]byte, 1024)
+	file, err := os.Create("./4k.tif")
+	defer file.Close()
+	if err != nil {
+		t.Error(err)
+	} else {
+		for {
+
+			n, err := response.Body.Read(buf)
+			if err != nil && err != io.EOF {
+				break
+			}
+
+			wn, werr := file.Write(buf)
+			if werr != nil {
+				break
+			}
+			t.Log(n, wn)
+		}
+	}
+	t.Log("done")
 }
