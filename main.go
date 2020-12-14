@@ -19,7 +19,7 @@ func fib(this js.Value, params []js.Value) interface{} {
 
 func makebyte(this js.Value, params []js.Value) interface{} {
 	go func() {
-		res, err := http.Get("http://vlocapitest.thinkskysoft.com/api/v1/location/near?pos=0&lng=-121.949000&lat=37.341100&distance=1000&detail=1&zoom=14")
+		res, err := http.Get("xxxxxxxx")
 		if err == nil {
 			if bytes, err := ioutil.ReadAll(res.Body); err == nil {
 				// dst := js.Global().Get("Uint8Array").New(len(bytes))
